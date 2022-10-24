@@ -1,28 +1,35 @@
 package base;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import base.drivers.DriverHolder;
+import base.drivers.WebDriverFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 
-import java.time.Duration;
+import java.util.logging.Logger;
+
+import static java.lang.System.getProperty;
 
 public class BaseTest {
+    private final Logger logger = Logger.getLogger(BaseTest.class.getName());
 
     @BeforeSuite
     public void driverSetup() {
+        logger.info("Test Suite Started");
         Environment.get();
-        WebDriverManager.chromedriver().setup();
+        boolean runWithGrid = Boolean.parseBoolean(getProperty("runWithGrid"));
+        Configuration.runWithGrid = runWithGrid;
     }
 
-    @BeforeTest
+    @BeforeMethod
     public void initiateDriver() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        DriverHolder.setDriver(driver);
+        try {
+            WebDriverFactory.initDriver();
+        } catch (Exception ex) {
+            logger.warning(ex.getLocalizedMessage());
+            
+        }
     }
 
     @AfterTest
@@ -35,6 +42,6 @@ public class BaseTest {
 
     @AfterSuite
     public void afterSuite() {
-
+        logger.info("Test Suite Finish");
     }
 }

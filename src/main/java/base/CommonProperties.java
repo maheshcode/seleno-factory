@@ -12,7 +12,7 @@ public class CommonProperties extends Properties {
 
     public static CommonProperties load(String... filePathArray) {
         CommonProperties allProperties = new CommonProperties();
-        Arrays.stream(filePathArray).toList().forEach(allProperties::loadFileByPath);
+        Arrays.stream(filePathArray).forEach(allProperties::loadFileByPath);
         return allProperties;
     }
 
