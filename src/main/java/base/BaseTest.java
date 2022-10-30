@@ -18,8 +18,6 @@ public class BaseTest {
     public void driverSetup() {
         logger.info("Test Suite Started");
         Environment.get();
-        boolean runWithGrid = Boolean.parseBoolean(getProperty("runWithGrid"));
-        Configuration.runWithGrid = runWithGrid;
     }
 
     @BeforeMethod
@@ -28,7 +26,7 @@ public class BaseTest {
             WebDriverFactory.initDriver();
         } catch (Exception ex) {
             logger.warning(ex.getLocalizedMessage());
-            
+
         }
     }
 
